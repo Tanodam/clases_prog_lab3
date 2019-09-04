@@ -22,3 +22,8 @@
     text-decoration: none;
     color: white;
 }
+
+.contenedor{
+    max-width: 1200px;
+    margin: 0 auto;
+}
