@@ -1,0 +1,24 @@
+.site-header{
+    background-image: url("../imgBienesRaices/img/header.jpg");
+
+    height: 100vh;
+
+    background-position: center center;
+
+    background-size: cover;
+}
+
+.contenido-header{
+    height: 100%;
+}
+
+.barra{
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+.navegacion a{
+    text-decoration: none;
+    color: white;
+}
