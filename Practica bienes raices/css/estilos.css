@@ -96,6 +96,6 @@ body {
 
 .anuncio {
     flex-basis: calc(33.3% - 10px);
-    padding-left: 10px;
-    padding-right: 10px;
+    justify-content: space-around;
+    border: 1pc solid gray;
 }
