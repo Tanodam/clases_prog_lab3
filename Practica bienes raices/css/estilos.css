@@ -85,3 +85,17 @@ body {
 .titulo-nosotros h2 {
     font-weight: 300;
 }
+
+.contenedor-anuncios {
+    display: flex;
+}
+
+.contenedor-anuncios img {
+    width: 100%;
+}
+
+.anuncio {
+    flex-basis: calc(33.3% - 10px);
+    padding-left: 10px;
+    padding-right: 10px;
+}
