@@ -88,6 +88,7 @@ body {
 
 .contenedor-anuncios {
     display: flex;
+    justify-content: space-between;
 }
 
 .contenedor-anuncios img {
@@ -96,6 +97,13 @@ body {
 
 .anuncio {
     flex-basis: calc(33.3% - 10px);
-    justify-content: space-around;
-    border: 1pc solid gray;
+    border: 1px solid gray;
+}
+
+.contenido-anuncio {
+    padding: 40px 20px;
+}
+
+.contenido-anuncio h3 {
+    font-size: 32px;
 }
