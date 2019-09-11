@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Buscador Lotes Mantis</h1>
+    <fieldset>
+        <legend>Buscador</legend>
+        <p>
+            <label for="listTipo"></label>
+            <select id="listTipo">
+                <option value="cufe">CUFE</option>
+                <option value="numslrg">Numero SLRG</option>
+                <option value="nombreslrg">Nombre SLRG</option>
+                <option value="lote">Lote</option>
+            </select>
+
+            <label for="buscador"></label>
+            <input type="text" id="buscador" placeholder="Ingrese datos">
+        </p>
+    </fieldset>
+    <fieldset>
+        <legend>Resultados encontrados</legend>
+        <p>
+            <ul id="resultado"></ul>
+        </p>
+
+    </fieldset>
+
+    <script type="text/javascript" src="./procesar.js"></script>
+</body>
+
+</html>
