@@ -10,8 +10,11 @@ function Persona(nombre, apellido, edad){
         return "Hola, me llamo" + this.nombre;
     }
 }
-
+ 
 var p1 = new Persona("Jose", "Peoe", 15);
 var p2 = new Persona( "Ana", "Gonzalez", 20);
+p1.altura = 1.80;
+Persona.prototype.altura = 1.5;
 
-console.log(p2.saludar());
+console.log(p1.altura);
+console.log(p2.altura);
