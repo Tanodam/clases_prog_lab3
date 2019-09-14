@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./anuncios.js"></script>
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/estilos.css">
+    <title>Agregador de anuncios</title>
+</head>
+
+<body class=site>
+    <div class="contenedor">
+
+        <form action="./anuncios.js" class="formulario">
+            <div class="inputform">
+                <label class="letra" for="txtNombre">Nombre</label>
+                <input type="text" id="txtNombre">
+            </div>
+
+            <div class="inputform">
+                <label class="letra" for="txtDescripcion">Descripcion</label>
+                <input type="textarea" id="txtDescripcion">
+            </div>
+
+            <div class="inputform">
+                <label class="letra" for="txtPrecio">Precio</label>
+                <input type="number" id="txtPrecio">
+            </div>
+
+            <div class="inputform numerico">
+                <label class="letra" for="txtCantBaños">Cantidad baños</label>
+                <input type="number" id="txtCantBaños" min="1" max="5" value="1">
+            </div>
+
+            <div class="inputform numerico">
+                <label class="letra" for="txtCantDormitorios">Cantidad dormitorios</label>
+                <input type="number" id="txtCantDormitorios" min="1" max="10" value="1">
+            </div>
+
+            <div class="inputform numerico">
+                <label class="letra" for="txtCantCocheras">Cantidad cocheras</label>
+                <input type="number" id="txtCantCocheras" min="1" max="10" value="1">
+            </div>
+            <button id="btnanuncio" class="botonanuncio" type="button" form="formulario">Enviar</button>
+        </form>
+    </div>
+</body>
+
+</html>

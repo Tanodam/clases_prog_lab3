@@ -1,0 +1,42 @@
+.inputform {
+    margin: 10px 0px;
+    font-size: 20px;
+}
+
+.botonanuncio {
+    margin: 7px 0px;
+    font-size: 30px;
+    border-radius: 15px;
+}
+
+.site {
+    background-image: url("../img/foto.png");
+    background-size: 100%;
+}
+
+.letra {
+    color: white;
+}
+
+.inputform input {
+    display: inline-block;
+    border-radius: 5px;
+    width: 300px;
+}
+
+.inputform label {
+    display: inline-block;
+    clear: left;
+    width: 260px;
+    text-align: left;
+}
+
+.contenedor {
+    margin: 25px
+}
+
+.numerico input {
+    display: inline-block;
+    border-radius: 5px;
+    width: 100px;
+}
