@@ -1,3 +1,5 @@
+let mascotas = [];
+
 function Mascota(nombre, edad, tipo, castrado, vacunado, desparasitado, alimento){
 this.nombre = nombre;
 this.edad = edad;
@@ -9,7 +11,7 @@ this.alimento = alimento;
 
 }
 //Sobreescritura del to string
-Mascota.prototype.toString = function(){
-    return `Hola soy un ${this.tipo} y me llamo ${this.nombre} y tengo ${this.edad} años`;
-}
+// Mascota.prototype.toString = function(){
+//     return `Hola soy un ${this.tipo} y me llamo ${this.nombre} y tengo ${this.edad} años`;
+//}
 
