@@ -25,12 +25,11 @@ function enviarDatos(e) {
             }
 
         } else {
-            info.innerHTML = '<img src="./images/spinner1.gif" alt= "spinner">';
+            info.innerHTML = '<img src="./images/spinner.gif" alt= "spinner">';
         }
     }
-    xhr.open('POST', "./servidor.php", true); //abrimos conexion servidor
-    xhr.setRequestHeader('Content-type', 'Application/x-www-form-urlencoded')
-    xhr.send(data); //enviamos peticion
+    xhr.open('GET', "./servidor.php?" + data, true); //abrimos conexion servidor
+    xhr.send(); //enviamos peticion
     var tiempo = setTimeout(() => {
         xhr.abort();
         info.innerHTML = 'Servidor ocupado. Intente mas tarde';
