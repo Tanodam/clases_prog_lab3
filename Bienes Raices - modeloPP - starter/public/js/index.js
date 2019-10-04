@@ -1,3 +1,6 @@
+
+
+
 let frm;
 
 window.addEventListener('load', inicializarManejadores);
@@ -11,7 +14,9 @@ function inicializarManejadores() {
 function manejadorSubmit(e) {
     e.preventDefault();
     let nuevoAnuncio = obtenerAnuncio(e.target, false);
+    //console.log(nuevoAnuncio);
     altaAnuncio(nuevoAnuncio);
+
 }
 
 function manejadorModificar(e) {
@@ -49,9 +54,9 @@ function obtenerAnuncio(frm, tieneId) {
             case "num_dormitorio":
                 num_dormitorio = element.value;
                 break;
-                case "transaccion":
-                    transaccion = element.value;
-                    break;
+            case "transaccion":
+                transaccion = element.value;
+                break;
             case "id":
                 if (tieneId == true) {
                     id = element.value;
@@ -61,40 +66,38 @@ function obtenerAnuncio(frm, tieneId) {
                 break;
         }
     }
-     return new Anuncio(titulo,descripcion,precio,transaccion,num_wc,num_estacionamiento,num_dormitorio);
+    return new Anuncio(titulo, descripcion, precio, transaccion, num_wc, num_estacionamiento, num_dormitorio);
 
 }
 
-function altaAnuncio(nuevoAnuncio)
-{
+function altaAnuncio(anuncio) {
     let xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = () =>{
-        if(this.readyState == 4 && this.status == 200){
-            console.log("lleguo alta anuncio");
-            armarTabla();
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            alert(xhr.responseText);
+            traerAnuncios();
         }
     }
     xhr.open('POST', 'http://localhost:3000/altaAnuncio', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify(nuevoAnuncio));
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.send(JSON.stringify(anuncio));
 }
- function traerAnuncios()
- {
+
+function traerAnuncios() {
     let xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function(){
-        if(this.readyState == 4 && this.status == 200){
-            console.log("llego traer anuncios")
-            return JSON.parse(xhr.responseText());
+    xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            //return callback(JSON.parse(xhr.responseText));
+            let objetos = JSON.parse(xhr.responseText);
+            //console.log(objetos.data);   
+            document.getElementById("divTabla").appendChild(crearTabla(objetos.data));
         }
     }
-    xhr.open('GET', "http://localhost:3000//traerAnuncios", true);
+    xhr.open('GET', "http://localhost:3000/traerAnuncios", true);
     xhr.send();
 
- }
+}
 
- function armarTabla()
- {
-     let objetos = traerAnuncios();
-     console.log("llego armar tabla");
-     document.getElementById("divTabla").appendChild(crearTabla(objetos));
- }
+function armarTabla() {
+    document.getElementById("divTabla").appendChild(crearTabla(objetos));
+}  
