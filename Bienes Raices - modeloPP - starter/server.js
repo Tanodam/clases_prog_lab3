@@ -1,25 +1,61 @@
 const express = require('express');
+
 const app = express();
+
 const cors = require('cors');
+
 const parser = require('body-parser');
+
 var Anuncios = require('./data/data.json');
+
 //var arrayAnuncios = [{ id:20000, nombre:"Juan", apellido:"Perez", edad:20}];
+
 var id = 20000;
+
 var puerto = 3000;
+
 var todoOk;
+
+
+
 app.use(cors());
+
+
+
 //app.use(express.json());
+
+
+
 app.use(express.static(__dirname + '/public'));
+
+
+
 //app.use(parser.urlencoded({ extended: true }));
+
+
+
 // Express 4.0
+
 app.use(parser.json({ limit: '20mb' }));
+
 app.use(parser.urlencoded({ extended: true, limit: '20mb' }));
+
+
+
 //--------------Traer Anuncios-----------------------------------
+
+
+
 app.get("/traerAnuncios", function(request, response) {
+
     //console.log("Enviando Anuncios");
+
     console.log(Anuncios);
+
     require('fs').readFile(__dirname + '\\data\\data.json', 'utf8', function(err, data) {
+
         if (err) {
+
             throw err;
 
         } else if (data === undefined) {
@@ -40,9 +76,11 @@ app.get("/traerAnuncios", function(request, response) {
 
 
 
-        setTimeout(function() { response.send({ "message": "Carga exitosa", "data": array }); }, 10);
+        setTimeout(function() { response.send({ "message": "Carga exitosa", "data": array }); }, 3000);
 
     });
+
+
 
 });
 
@@ -117,7 +155,7 @@ app.post('/altaAnuncio', (request, response) => {
                     data: array
                 }*/
 
-                setTimeout(function() { response.send("Alta Exitosa"); }, 50);
+                setTimeout(function() { response.send("Alta Exitosa"); }, 3000);
 
             }
 
@@ -171,7 +209,7 @@ app.post('/bajaAnuncio', (request, response) => {
 
         response.send({ "message": "Baja exitosa" });
 
-    }, 10);
+    }, 3000);
 
 
 
@@ -184,25 +222,7 @@ app.post('/bajaAnuncio', (request, response) => {
 
 
 app.post('/modificarAnuncio', (request, response) => {
-    ///
-    var respuesta = { "todoOk": 0 };
-    var persona = request.body;
-    var personaModificada = request.body;
 
-    if (index != -1) {
-        arrayPersonas.splice(index, 1);
-        arrayPersonas.push(persona);
-        console.log("Modificado");
-        respuesta.todoOk = 1;
-    } else {
-        console.log("Sin cambios");
-    }
-
-
-    setTimeout(function() {
-        response.send(respuesta);
-    }, 10);
-    //////
 
 
     var respuesta = { "todoOk": 0 };
@@ -231,7 +251,7 @@ app.post('/modificarAnuncio', (request, response) => {
 
             var index = array.findIndex(function(obj) { return obj.id === Anuncio.id || obj.id.toString() === Anuncio.id; })
 
-            //array[index] = Anuncio;
+            array[index] = Anuncio;
 
 
 
@@ -253,7 +273,7 @@ app.post('/modificarAnuncio', (request, response) => {
 
         response.send(respuesta);
 
-    }, 10);
+    }, 3000);
 
 });
 

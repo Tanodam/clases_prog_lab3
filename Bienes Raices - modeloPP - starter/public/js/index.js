@@ -5,8 +5,8 @@ window.addEventListener('load', inicializarManejadores);
 function inicializarManejadores() {
     frm = document.forms[0];
     frm.addEventListener('submit', manejadorSubmit);
-    traerAnuncios();
     document.getElementById("btnBorrar").addEventListener('click', borrarAnuncio);
+    traerAnuncios();
 }
 
 function manejadorSubmit(e) {
@@ -81,7 +81,6 @@ function altaAnuncio(anuncio) {
     let xhr = new XMLHttpRequest();
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            alert(xhr.responseText);
             traerAnuncios();
         }
     }
@@ -93,7 +92,9 @@ function altaAnuncio(anuncio) {
 function traerAnuncios() {
     let xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {;
+        if (this.readyState == 4 && this.status == 200) {
+
+
             let objetos = JSON.parse(xhr.responseText);
             document.getElementById("divTabla").innerText = "";
             document.getElementById("divTabla").appendChild(crearTabla(objetos.data));
@@ -103,10 +104,10 @@ function traerAnuncios() {
                 td.addEventListener('click', setValues);
             }
         }
+
     }
     xhr.open('GET', "http://localhost:3000/traerAnuncios", true);
     xhr.send();
-
 }
 
 function setValues(e) {
