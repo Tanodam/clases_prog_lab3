@@ -20,16 +20,16 @@
 
             <div class="formgrid">
 
-                <input type="text" id="id" name="idAnuncio" hidden disabled>
+                <input type="text" id="idAnuncio" name="idAnuncio" hidden disabled>
                 <label id="lblId" for="idAnuncio" hidden>Id</label>
 
                 <input placeholder="Titulo" type="text" id="titulo" name="titulo" required>
                 <label for="titulo">Titulo</label>
 
                 <input type="text" id="descripcion" name="descripcion">
-                <label for="edad">Descripcion</label>
+                <label for="descripcion">Descripcion</label>
 
-                <input type="number" id="precio" name="precio">
+                <input type="text" id="precio" name="precio">
                 <label for="precio">Precio</label>
 
                 <input type="number" id="num_wc" name="num_wc">
@@ -41,8 +41,8 @@
                 <input type="number" id="num_dormitorio" name="num_dormitorio">
                 <label for="precio">Numero Dormitorio</label>
 
-                <input type="radio" name="transaccion" value="Venta"> Venta<br>
-                <input type="radio" name="transaccion" value="Alquiler"> Alquiler<br>
+                <input type="radio" name="transaccion" value="Venta" id=transaccionVenta> Venta<br>
+                <input type="radio" name="transaccion" value="Alquiler" id=transaccionAlquiler> Alquiler<br>
 
                 <button type="submit" id="btnCrearModificar">Crear</button>
                 <button type="button" id="btnBorrar" hidden>Borrar</button>
@@ -51,7 +51,7 @@
     </form>
     <div id="divTabla">
 
-        </div>
+    </div>
 
 </body>
 

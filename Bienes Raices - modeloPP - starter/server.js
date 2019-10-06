@@ -1,88 +1,48 @@
 const express = require('express');
-
 const app = express();
-
 const cors = require('cors');
-
 const parser = require('body-parser');
-
 var Anuncios = require('./data/data.json');
-
 //var arrayAnuncios = [{ id:20000, nombre:"Juan", apellido:"Perez", edad:20}];
-
 var id = 20000;
-
 var puerto = 3000;
-
 var todoOk;
-
-
-
 app.use(cors());
-
-
-
 //app.use(express.json());
-
-
-
 app.use(express.static(__dirname + '/public'));
-
-
-
 //app.use(parser.urlencoded({ extended: true }));
-
-
-
 // Express 4.0
-
 app.use(parser.json({ limit: '20mb' }));
-
 app.use(parser.urlencoded({ extended: true, limit: '20mb' }));
-
-
-
 //--------------Traer Anuncios-----------------------------------
+app.get("/traerAnuncios", function(request, response) {
+    //console.log("Enviando Anuncios");
+    console.log(Anuncios);
+    require('fs').readFile(__dirname + '\\data\\data.json', 'utf8', function(err, data) {
+        if (err) {
+            throw err;
+
+        } else if (data === undefined) {
+
+            throw ("No se encontro la data solicitada");
+
+        }
 
 
 
-app.get("/traerAnuncios", function (request, response) {
+        var array = JSON.parse(data);
 
-  //console.log("Enviando Anuncios");
+        array = array.filter(function(a) {
 
-  console.log(Anuncios);
+            return a.active == true || a.active == "true";
 
-  require('fs').readFile(__dirname + '\\data\\data.json', 'utf8', function (err, data) {
-
-    if (err) {
-
-      throw err;
-
-    }
-
-    else if (data === undefined) {
-
-      throw ("No se encontro la data solicitada");
-
-    }
+        });
 
 
 
-    var array = JSON.parse(data);
-
-    array = array.filter(function (a) {
-
-      return a.active == true || a.active == "true";
+        setTimeout(function() { response.send({ "message": "Carga exitosa", "data": array }); }, 10);
 
     });
-
-
-
-    setTimeout(function () { response.send({ "message": "Carga exitosa", "data": array }); }, 5000);
-
-  });
-
-
 
 });
 
@@ -94,78 +54,78 @@ app.post('/altaAnuncio', (request, response) => {
 
 
 
-  var nuevoAnuncio = request.body;
+    var nuevoAnuncio = request.body;
 
-  var Anuncio = {};
-
-
-  if (validarAnuncio(nuevoAnuncio)) {
-
-    require('fs').readFile(__dirname + '\\data\\data.json', 'utf8', function (err, data) {
-
-      if (err) {
-
-        throw err; // error handling
-
-      } else {
+    var Anuncio = {};
 
 
+    if (validarAnuncio(nuevoAnuncio)) {
+
+        require('fs').readFile(__dirname + '\\data\\data.json', 'utf8', function(err, data) {
+
+            if (err) {
+
+                throw err; // error handling
+
+            } else {
 
 
 
-        //guardo el objeto
-
-        var array = [];
-
-        array = JSON.parse(data);
-
-        Anuncio.id = getID(array);
-
-        /*Anuncio.foto = "public/img/"+Anuncio.id+".jpg";
-        //guardo la imagen
-        nuevoAnuncio.foto = nuevoAnuncio.foto.split(';base64,').pop();
-        require("fs").writeFile(Anuncio.foto, nuevoAnuncio.foto, 'base64', function(err) {
-            console.log(err);
-          });*/
-
-        Anuncio.titulo = nuevoAnuncio.titulo;
-
-        Anuncio.transaccion = nuevoAnuncio.transaccion;
-
-        Anuncio.descripcion = nuevoAnuncio.descripcion;
-
-        Anuncio.precio = nuevoAnuncio.precio;
-
-        Anuncio.num_wc = nuevoAnuncio.num_wc;
-
-        Anuncio.num_estacionamiento = nuevoAnuncio.num_estacionamiento;
-
-        Anuncio.num_dormitorio = nuevoAnuncio.num_dormitorio;
-
-        Anuncio.active = "true";
 
 
-        console.log("Cargando anuncios");
-        array.push(Anuncio);
+                //guardo el objeto
 
-        require('fs').writeFileSync(__dirname + '\\data\\data.json', JSON.stringify(array));
+                var array = [];
 
-        //build response
+                array = JSON.parse(data);
 
-        /*var respuesta = {
-            message: "Alta exitosa",
-            data: array
-        }*/
+                Anuncio.id = getID(array);
 
-        setTimeout(function () { response.send("Alta Exitosa"); }, 5000);
+                /*Anuncio.foto = "public/img/"+Anuncio.id+".jpg";
+                //guardo la imagen
+                nuevoAnuncio.foto = nuevoAnuncio.foto.split(';base64,').pop();
+                require("fs").writeFile(Anuncio.foto, nuevoAnuncio.foto, 'base64', function(err) {
+                    console.log(err);
+                  });*/
 
-      }
+                Anuncio.titulo = nuevoAnuncio.titulo;
+
+                Anuncio.transaccion = nuevoAnuncio.transaccion;
+
+                Anuncio.descripcion = nuevoAnuncio.descripcion;
+
+                Anuncio.precio = nuevoAnuncio.precio;
+
+                Anuncio.num_wc = nuevoAnuncio.num_wc;
+
+                Anuncio.num_estacionamiento = nuevoAnuncio.num_estacionamiento;
+
+                Anuncio.num_dormitorio = nuevoAnuncio.num_dormitorio;
+
+                Anuncio.active = "true";
+
+
+                console.log("Cargando anuncios");
+                array.push(Anuncio);
+
+                require('fs').writeFileSync(__dirname + '\\data\\data.json', JSON.stringify(array));
+
+                //build response
+
+                /*var respuesta = {
+                    message: "Alta exitosa",
+                    data: array
+                }*/
+
+                setTimeout(function() { response.send("Alta Exitosa"); }, 50);
+
+            }
 
 
 
-    });
+        });
 
-  }
+    }
 
 });
 
@@ -177,41 +137,41 @@ app.post('/altaAnuncio', (request, response) => {
 
 app.post('/bajaAnuncio', (request, response) => {
 
-  var indice = request.body.id;
+    var indice = request.body.id;
 
-  var array;
+    var array;
 
-  require('fs').readFile(__dirname + '\\data\\data.json', 'utf8', function (err, data) {
+    require('fs').readFile(__dirname + '\\data\\data.json', 'utf8', function(err, data) {
 
-    if (err) {
+        if (err) {
 
-      // error handling
+            // error handling
 
-    }
+        }
 
-    array = JSON.parse(data);
+        array = JSON.parse(data);
 
-    var objectToDelete = array.filter(function (a) {
+        var objectToDelete = array.filter(function(a) {
 
-      return a.id == indice;
+            return a.id == indice;
+
+        });
+
+        remove(objectToDelete[0]);
+
+        require('fs').writeFileSync(__dirname + '\\data\\data.json', JSON.stringify(array));
+
+        //res.send({"message":"Baja exitosa"}); 
 
     });
 
-    remove(objectToDelete[0]);
-
-    require('fs').writeFileSync(__dirname + '\\data\\data.json', JSON.stringify(array));
-
-    //res.send({"message":"Baja exitosa"}); 
-
-  });
 
 
+    setTimeout(() => {
 
-  setTimeout(() => {
+        response.send({ "message": "Baja exitosa" });
 
-    response.send({ "message": "Baja exitosa" });
-
-  }, 1000);
+    }, 10);
 
 
 
@@ -224,60 +184,76 @@ app.post('/bajaAnuncio', (request, response) => {
 
 
 app.post('/modificarAnuncio', (request, response) => {
+    ///
+    var respuesta = { "todoOk": 0 };
+    var persona = request.body;
+    var personaModificada = request.body;
+
+    if (index != -1) {
+        arrayPersonas.splice(index, 1);
+        arrayPersonas.push(persona);
+        console.log("Modificado");
+        respuesta.todoOk = 1;
+    } else {
+        console.log("Sin cambios");
+    }
+
+
+    setTimeout(function() {
+        response.send(respuesta);
+    }, 10);
+    //////
+
+
+    var respuesta = { "todoOk": 0 };
+
+    var Anuncio = request.body;
+
+    var AnuncioModificada = request.body;
 
 
 
-  var respuesta = { "todoOk": 0 };
+    if (validarAnuncio(Anuncio, true)) {
 
-  var Anuncio = request.body;
+        var array = new Array();
 
-  var AnuncioModificada = request.body;
+        require('fs').readFile(__dirname + '\\data\\data.json', 'utf8', function(err, data) {
 
+            if (err) {
 
+                // error handling
 
-  if (validarAnuncio(Anuncio, true)) {
+            }
 
-    var array = new Array();
+            array = JSON.parse(data);
 
-    require('fs').readFile(__dirname + '\\data\\data.json', 'utf8', function (err, data) {
+            //obtengo index del id que necesito
 
-      if (err) {
+            var index = array.findIndex(function(obj) { return obj.id === Anuncio.id || obj.id.toString() === Anuncio.id; })
 
-        // error handling
-
-      }
-
-      array = JSON.parse(data);
-
-      //obtengo index del id que necesito
-
-      var index = array.findIndex(function (obj) { return obj.id === Anuncio.id || obj.id.toString() === Anuncio.id; })
-
-      array[index] = Anuncio;
+            //array[index] = Anuncio;
 
 
 
-      require('fs').writeFileSync(__dirname + '\\data\\data.json', JSON.stringify(array));
+            require('fs').writeFileSync(__dirname + '\\data\\data.json', JSON.stringify(array));
 
-      //response.send('Modificacion exitosa'); 
+            //response.send('Modificacion exitosa'); 
 
-    });
+        });
 
-  }
+    } else {
 
-  else {
+        console.log("Anuncio invalida");
 
-    console.log("Anuncio invalida");
-
-  }
+    }
 
 
 
-  setTimeout(function () {
+    setTimeout(function() {
 
-    response.send(respuesta);
+        response.send(respuesta);
 
-  }, 1000);
+    }, 10);
 
 });
 
@@ -291,7 +267,7 @@ app.post('/modificarAnuncio', (request, response) => {
 
 const server = app.listen(puerto, () => {
 
-  console.log('Servidor web iniciado en el puerto ' + puerto);
+    console.log('Servidor web iniciado en el puerto ' + puerto);
 
 });
 
@@ -305,35 +281,33 @@ function validarAnuncio(Anuncio, full) {
 
 
 
-  var esValida = false;
+    var esValida = false;
 
 
 
-  if (full) {
+    if (full) {
 
-    if (Anuncio.hasOwnProperty('id') && Anuncio.hasOwnProperty('descripcion') && Anuncio.hasOwnProperty('num_dormitorio') && Anuncio.hasOwnProperty('num_estacionamiento') && Anuncio.hasOwnProperty('num_wc') && Anuncio.hasOwnProperty('precio') && Anuncio.hasOwnProperty('titulo') && Anuncio.hasOwnProperty('transaccion')) {
+        if (Anuncio.hasOwnProperty('id') && Anuncio.hasOwnProperty('descripcion') && Anuncio.hasOwnProperty('num_dormitorio') && Anuncio.hasOwnProperty('num_estacionamiento') && Anuncio.hasOwnProperty('num_wc') && Anuncio.hasOwnProperty('precio') && Anuncio.hasOwnProperty('titulo') && Anuncio.hasOwnProperty('transaccion')) {
 
-      esValida = true;
+            esValida = true;
+
+        }
+
+    } else {
+
+        if (Anuncio.hasOwnProperty('descripcion') && Anuncio.hasOwnProperty('num_dormitorio') && Anuncio.hasOwnProperty('num_estacionamiento') && Anuncio.hasOwnProperty('num_wc') && Anuncio.hasOwnProperty('precio') && Anuncio.hasOwnProperty('titulo') && Anuncio.hasOwnProperty('transaccion')) {
+
+            esValida = true;
+
+        }
+
+
 
     }
 
-  }
-
-  else {
-
-    if (Anuncio.hasOwnProperty('descripcion') && Anuncio.hasOwnProperty('num_dormitorio') && Anuncio.hasOwnProperty('num_estacionamiento') && Anuncio.hasOwnProperty('num_wc') && Anuncio.hasOwnProperty('precio') && Anuncio.hasOwnProperty('titulo') && Anuncio.hasOwnProperty('transaccion')) {
-
-      esValida = true;
-
-    }
 
 
-
-  }
-
-
-
-  return esValida;
+    return esValida;
 
 
 
@@ -343,17 +317,17 @@ function validarAnuncio(Anuncio, full) {
 
 
 
-app.get('/', function (req, res) {
+app.get('/', function(req, res) {
 
-  res.sendFile(__dirname + '/public/index.html');
+    res.sendFile(__dirname + '/public/index.html');
 
 });
 
 
 
-app.get('/admin', function (req, res) {
+app.get('/admin', function(req, res) {
 
-  res.sendFile(__dirname + '/public/admin.html');
+    res.sendFile(__dirname + '/public/admin.html');
 
 });
 
@@ -361,7 +335,7 @@ app.get('/admin', function (req, res) {
 
 function remove(a) {
 
-  a.active = "false";
+    a.active = "false";
 
 }
 
@@ -369,34 +343,30 @@ function remove(a) {
 
 function getID(array) {
 
-  if (array.length == 0) {
+    if (array.length == 0) {
 
-    return 1;
+        return 1;
 
-  }
+    } else if (array.length == 1) {
 
-  else if (array.length == 1) {
+        return 2;
 
-    return 2;
+    } else {
 
-  }
+        var maxIndex = array.reduce(function(prev, curr, index) {
 
-  else {
+            if (parseInt(prev.id) > parseInt(curr.id))
 
-    var maxIndex = array.reduce(function (prev, curr, index) {
+                return parseInt(prev.id);
 
-      if (parseInt(prev.id) > parseInt(curr.id))
+            else
 
-        return parseInt(prev.id);
+                return parseInt(curr.id);
 
-      else
+        });
 
-        return parseInt(curr.id);
+        return (maxIndex + 1).toString();
 
-    });
-
-    return (maxIndex + 1).toString();
-
-  }
+    }
 
 }

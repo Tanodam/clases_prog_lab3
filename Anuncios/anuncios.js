@@ -22,14 +22,14 @@ function alta() {
     cantCocheras = document.getElementById('txtCantCocheras').value;
     //console.log(nombre + " " + descripcion + " " + precio + " " + cantBaños + " " + cantDormitorios+ " " + cantCocheras);
     anuncio = {
-            nombre: nombre,
-            descripcion: descripcion,
-            precio: precio,
-            cantidadbaños: cantBaños,
-            cantidaddormitorios: cantDormitorios,
-            canidadcocheras: cantCocheras
-        }
-        //arrayAnuncios.push(anuncio);
+        nombre: nombre,
+        descripcion: descripcion,
+        precio: precio,
+        cantidadbaños: cantBaños,
+        cantidaddormitorios: cantDormitorios,
+        canidadcocheras: cantCocheras
+    }
+    arrayAnuncios.push(anuncio);
     arrayAnunciosJSON.push(JSON.stringify(arrayAnuncios));
     console.log(arrayAnunciosJSON);
 }
