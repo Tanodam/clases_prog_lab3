@@ -34,6 +34,34 @@ function filtrarTransaccion(e, array) {
     tabla.appendChild(crearTabla(arr));
 
 }
+function filtrarTransaccion(e, array) {
+    let valorSeleccionado = e.target.value;
+    let arr = array.filter((elemento) => elemento.transaccion == valorSeleccionado);
+    let tabla = document.getElementById("divTabla");
+    tabla.innerHTML = "";
+    tabla.appendChild(crearTabla(arr));
+
+}function filtrarCheckbox(e, array, element) {
+     let valorSeleccionado = e.target.value;
+     //console.log(valorSeleccionado);
+     for(elemento in array)
+     {
+         switch(element)
+         {
+             case 'titulo':
+                 var elemento = elemento.titulo;
+                 break;
+         }
+         
+     }
+     
+
+     let arr = array.filter((elemento) => elemento == valorSeleccionado);
+     console.log(arr);
+    // let tabla = document.getElementById("divTabla");
+    // tabla.innerHTML = kcrearTabla(arr));
+
+}
 
 //////////////////////LLAMADAS AJAX/////////////////////////////////
 function cargarDatos() {
@@ -49,12 +77,26 @@ function cargarDatos() {
             tabla.innerHTML = "";
             let objetos = JSON.parse(xhr.responseText);
             crearBoxes(objetos.data, "divChk");
-            chk.hidden = true;
+            chk.hidden = false;
             tabla.appendChild(crearTabla(objetos.data));
             divSelect.appendChild(crearSelect(objetos.data));
             document.getElementsByTagName("select")[0].addEventListener("change", (e) => {
                 filtrarTransaccion(e, objetos.data);
             });
+            let seleccion = document.querySelectorAll("input[class=checkbox]");
+            for (let i = 0; i < seleccion.length; i++) {
+                seleccion[i].addEventListener("change", (e) => {
+                    if(seleccion[i].checked)
+                    {
+                        filtrarCheckbox(e, objetos.data);
+                    }
+                    else
+                    {
+                        console.clear();
+                    }
+                });
+            }
+            
             let tds = document.getElementsByTagName("td")
             for (let i = 0; i < tds.length; i++) {
                 tds[i].addEventListener("click", setValues);

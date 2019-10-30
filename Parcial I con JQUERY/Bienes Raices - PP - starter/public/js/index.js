@@ -1,20 +1,23 @@
 //ATRIBUTOS DE ANUNCIO
 //id,titulo,transaccion,descripcion,precio,num_wc,num_estacionamiento,num_dormitorio;
-$(function() {
+let primeraVez = true;
+$(function () {
     inicializarManejadores();
 })
 
 function inicializarManejadores() {
     $("#frm").submit(manejadorSubmit);
-    $("#btnBorrar").click(borrarAnuncio);
-    cargarGrilla();
+    //$("#btnBorrar").click(borrarAnuncio);
+    $("#btnLimpiar").click(limpiarForm);
+    cargarGrilla(datos);
+
 
 }
 
 function manejadorSubmit(e) {
     e.preventDefault();
     let nuevoAnuncio = obtenerAnuncio(e.target, false);
-    console.log(nuevoAnuncio);
+    //console.log(nuevoAnuncio);
     altaAnuncio(nuevoAnuncio);
 
 }
@@ -28,68 +31,42 @@ function manejadorModificar(e) {
 }
 
 //////////////////////LLAMADAS AJAX/////////////////////////////////
-function cargarGrilla() {
-    let tabla = $("#divTabla");
-    let impresion_grilla = function() {
-        tabla.append(crearTabla(datos));
+function cargarGrilla(array) {
+    let tabla = $(".col-12");
+    tabla.html('');
+    $('tbody', tabla);
 
-        let tds = $("#td");
-        $("td").each(() => {
-            // $(this).click(setValues);
-        })
+    if(primeraVez === true)
+    {
+        crearBoxes(datos,"divChk"); 
+        primeraVez = false;
     }
-    cargarDatos(impresion_grilla);
+    //checkbox.html('');
+    tabla.append(crearTabla(array));
+    let tds = $("td");
+    tds.on("click", setValues);
+
+}
+
+function filtrarCheckbox() {
+    let opciones = ['id'];
+    $('.box input:checked').each(function() {
+        if ($(this).prop('checked') == true) {
+            opciones.push($(this).val());
+        }
+    })
+    cargarGrilla(datos.map(function(dato) {
+        let retorno = new Object();
+        opciones.forEach(elemento => {
+            retorno[elemento] = dato[elemento];
+        });
+        return retorno;
+    }))
 }
 
 function altaAnuncio(nuevoAnuncio) {
-    //var xhr = new XMLHttpRequest();
-    let tabla = $("#divTabla");
-    altaDatos(() => {
-        limpiarForm();
-        cargarGrilla();
-    }, nuevoAnuncio)
+    alert("Ya no anda esto maestro, no rompas las bolas");
 
-
-
-}
-
-function modificarAnuncio(nuevoAnuncio) {
-    var xhr = new XMLHttpRequest();
-    let tabla = document.getElementById("divTabla");
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            tabla.innerText = "";
-            cargarDatos();
-        } else {
-            tabla.innerHTML = "<img src='./img/831.gif' alt='spinner'>";
-        }
-
-    };
-    //Envio la peticion get
-    var url = "http://localhost:3000/modificarAnuncio";
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader('Content-type', 'Application/json');
-    xhr.send(JSON.stringify(nuevoAnuncio));
-}
-
-function borrarAnuncio() {
-    var xhr = new XMLHttpRequest();
-    let tabla = document.getElementById("divTabla");
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            tabla.innerText = "";
-            cargarDatos();
-            limpiarForm();
-        } else {
-            tabla.innerHTML = "<img src='./img/831.gif' alt='spinner'>";
-        }
-
-    };
-    //Envio la peticion get
-    var url = "http://localhost:3000/bajaAnuncio";
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader('Content-type', 'Application/x-www-form-urlencoded');
-    xhr.send(obtenerId(frm));
 }
 
 
@@ -101,7 +78,7 @@ function obtenerAnuncio(frm, tieneId) {
     let num_estacionamiento;
     let num_dormitorio;
     let transaccion;
-    let id = -1;
+    let id;
     for (element of frm.elements) {
         switch (element.name) {
             case "titulo":
@@ -129,10 +106,13 @@ function obtenerAnuncio(frm, tieneId) {
                 break;
             case "idAnuncio":
                 if (tieneId === true) {
-                    console.log("entro");
                     id = element.value;
                 } else {
                     id = element.value;
+                    // ids = datos.map(element => element.id).sort(function (a, b) { return a - b; });
+                    // ultimoId = ids[ids.length - 1];
+                    // ultimoId++;
+                    // id = ultimoId;
                 }
                 break;
         }
@@ -143,26 +123,34 @@ function obtenerAnuncio(frm, tieneId) {
 function setValues(e) {
     let tr = e.target.parentElement;
     let nodos = tr.childNodes;
-    $("#idAnuncio").val = nodos[0].innerText;
-    $("#idAnuncio").hide;
-
-    $("#lblId").hide;
-    document.getElementById("titulo").value = nodos[1].innerText;
+    //ID
+    $("#idAnuncio").val(nodos[0].innerText);
+    $("#idAnuncio").show();
+    $("#lblId").show();
+    //Titulo
+    $("#titulo").val(nodos[1].innerText);
+    //Transaccion
     if (nodos[2].innerHTML == "Venta") {
-        document.getElementById("transaccionVenta").checked = true;
+        $('#transaccionVenta').prop('checked', true);
     } else {
-        document.getElementById("transaccionAlquiler").checked = true;
+        $('#transaccionAlquiler').prop('checked', true);
     }
-    document.getElementById("descripcion").value = nodos[3].innerText;
-    document.getElementById("precio").value = nodos[4].innerText;
-    document.getElementById("num_wc").value = nodos[5].innerText;
-    document.getElementById("num_estacionamiento").value = nodos[6].innerText;
-    document.getElementById("num_dormitorio").value = nodos[7].innerText;
+    //Descripcion
+    $("#descripcion").val(nodos[3].innerText);
+    //Precio
+    $("#precio").val(nodos[4].innerText);
+    //Num WC
+    $("#num_wc").val(nodos[5].innerText);
+    //Num Estancionamiento
+    $("#num_estacionamiento").val(nodos[6].innerText);
+    //Num Dormitorio
+    $("#num_dormitorio").val(nodos[7].innerText);
 
-    document.getElementById("btnCrearModificar").innerText = "Modificar";
-    document.getElementById("btnBorrar").hidden = false;
-    frm.removeEventListener('submit', manejadorSubmit);
-    frm.addEventListener('submit', manejadorModificar);
+    $("#btnCrearModificar").text("Modificar");
+    $("#btnBorrar").show();
+    $("#frm").off('submit', manejadorSubmit);
+    $("#frm").submit(manejadorModificar);
+    $("#btnLimpiar").show();
 }
 
 function obtenerId(frm) {
@@ -174,20 +162,21 @@ function obtenerId(frm) {
 }
 
 function limpiarForm() {
-    document.getElementById("idAnuncio").hidden = true;
-    document.getElementById("lblId").hidden = true;
-    document.getElementById("descripcion").value = "";
-    document.getElementById("titulo").value = "";
-    document.getElementById("precio").value = "";
-    document.getElementById("num_wc").value = "";
-    document.getElementById("num_estacionamiento").value = "";
-    document.getElementById("num_dormitorio").value = "";
-    document.getElementById("transaccionAlquiler").checked = false;
-    document.getElementById("transaccionVenta").checked = false;
+    $("#idAnuncio").hide();
+    $("#lblId").hide()
+    $("#descripcion").val("");
+    $("#titulo").val("");
+    $("#precio").val("");
+    $("#num_wc").val("");
+    $("#num_estacionamiento").val("");
+    $("#num_dormitorio").val("");
+    $('#transaccionVenta').prop('checked', false);
+    $('#transaccionAlquiler').prop('checked', false);
 
-    document.getElementById("btnCrearModificar").innerText = "Crear";
-    document.getElementById("btnBorrar").hidden = true;
-    frm.removeEventListener('submit', manejadorModificar);
-    frm.addEventListener('submit', manejadorSubmit);
+    $("#btnCrearModificar").text("Crear");
+    $("#btnLimpiar").hide();
+    $("#btnBorrar").hide();
+    fr$("#frm").off('submit', manejadorModificar);
+    $("#frm").submit(manejadorSubmit);
 
 }

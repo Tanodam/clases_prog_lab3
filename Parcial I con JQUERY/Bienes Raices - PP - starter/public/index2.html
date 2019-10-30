@@ -5,10 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./js/jquery.js"></script>
+    <script src="./js/index.js"></script> 
     <script src="./js/tableHelper.js"></script>
     <script src="./js/checkBoxHelper.js"></script>
-    <script src="./js/selectHelper.js"></script>
-    <script src="./js/index.js"></script>
+    <script src="./data/data.js"></script>
+    <script src="./js/dispatcher_JQ.js"></script>
     <script src="./js/anuncios.js"></script>
     <link rel="stylesheet" href="./css/normalize.css">
     <link rel="stylesheet" href="./css/styles.css">
@@ -16,7 +18,7 @@
 </head>
 
 <body>
-    <form action="#">
+    <form id="frm" action="#">
         <legend>Crear Anuncios</legend>
         <fieldset>
             <div class="formulario">
@@ -34,6 +36,7 @@
 
 
                 <input type="number" name="num_estacionamiento" id="num_estacionamiento" required placeholder="Cantidad de estacionamiento">
+
 
                 <input type="number" name="num_dormitorio" id="num_dormitorio" required placeholder="Cantidad de Dormitorio">
 
@@ -53,9 +56,8 @@
         </fieldset>
         <button type="submit" id="btnCrearModificar">Crear</button>
         <button type="button" id="btnBorrar" hidden>Borrar</button>
-
+        <button type="button" id="btnLimpiar"hidden>Limpiar</button>
     </form>
-    <div id="selectTransaccion"></div>
     <div id="divChk"></div>
     <div id="divTabla"></div>
 </body>

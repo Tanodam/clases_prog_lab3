@@ -48,9 +48,9 @@ app.use(parser.urlencoded({ extended: true, limit: '20mb' }));
 
 app.get("/traerAnuncios", function(request, response) {
 
-    //console.log("Enviando Anuncios");
+    console.log("Enviando Anuncios");
 
-    console.log(Anuncios);
+    //console.log(Anuncios);
 
     require('fs').readFile(__dirname + '\\data\\data.json', 'utf8', function(err, data) {
 
@@ -176,6 +176,7 @@ app.post('/altaAnuncio', (request, response) => {
 app.post('/bajaAnuncio', (request, response) => {
 
     var indice = request.body.id;
+    console.log("El indice es " + indice);
 
     var array;
 

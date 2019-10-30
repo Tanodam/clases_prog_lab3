@@ -13,12 +13,13 @@ function manejadorSubmit(e) {
     e.preventDefault();
     let nuevoAnuncio = obtenerAnuncio(e.target, false);
     altaAnuncio(nuevoAnuncio);
-
+    
 }
 
 function manejadorModificar(e) {
     e.preventDefault();
     let anuncio = obtenerAnuncio(e.target, true);
+    console.log(obtenerId(frm));
     modificarAnuncio(anuncio);
 }
 

@@ -1,64 +1,30 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="./css/estilos.css">
-    <link rel="stylesheet" href="./css/normalize.css">
     <script src="./js/index.js"></script>
     <script src="./js/anuncio.js"></script>
     <script src="./js/tableHelper.js"></script>
-    <title>Crear Anuncios</title>
+    <title>Crear anuncios</title>
 </head>
-
 <body>
     <form action="#">
-
-        <legend>Crear Anuncio</legend>
         <fieldset>
-
-            <div class="formulario">
-                <label for="idAnuncio" id="lblId" hidden>ID</label>
-                <input type="text" name="idAnuncio" id="idAnuncio" hidden disabled>
-
-                <label for="titulo">Titulo</label>
-                <input type="text" name="titulo" id="titulo">
-
-                <label for="descripcion">Descripcion</label>
-                <input type="text" name="descripcion" id="descripcion">
-
-                <label for="precio">Precio</label>
-                <input type="number" name="precio" id="precio">
-
-                <label for="num_wc">N° Baños</label>
-                <input type="number" name="num_wc" id="num_wc">
-
-                <label for="num_dormitorio">N° Dormitorios</label>
-                <input type="number" name="num_dormitorio" id="num_dormitorio">
-
-                <label for="num_estacionamiento">N° Estacionamiento</label>
-                <input type="number" name="num_estacionamiento" id="num_estacionamiento">
-            </div>
+            <legend>Crear Anuncios</legend>
+            <div><label for="idAnuncio" id="lblId" hidden></label><input type="text" id="txt" name="idAnuncio" hidden disabled></div>
+            <div><label for="titulo"></label><input type="text" id="titulo" required></div>
+            <div><label for="descripcion"></label><input type="text" id="descripcion" required></div>
+            <div><label for="precio"></label><input type="text" id="precio" required></div>
+            <div><label for="num_wc"></label><input type="number" id="num_wc" required></div>
+            <div><label for="num_dormitorio"></label><input type="number" id="num_dormitorio" required></div>
+            <div><label for="num_estacionamiento"></label><input type="number" id="num_estacionamiento" required></div>
+            <button type="submit" id="btnCrearModificar">Crear</button>
+            <button type="button" id="btnBorrar" hidden>Borrar</button>
         </fieldset>
-
-        <legend>Transaccion</legend>
-        <fieldset>
-            <div class="formulario">
-                <div class="radios">
-                    <input type="radio" name="transaccion" id="transaccionAlquiler" value="Alquiler">Alquiler
-                    <input type="radio" name="transaccion" id="transaccionVenta" value="Venta">Venta
-                </div>
-            </div>
-        </fieldset>
-        <button type="submit" class="button" id="btnCrearOModificar">Crear</button>
-        <button type="submit" id="btnBorrar" hidden>Borrar</button>
-
-
     </form>
-
-    <div id=divTabla></div>
+    <div id="divtabla"></div>
+    
 </body>
-
 </html>

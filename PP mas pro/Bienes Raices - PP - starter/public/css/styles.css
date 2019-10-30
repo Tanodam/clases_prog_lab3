@@ -40,3 +40,8 @@ body{
 button{
     border-radius: 5px;
 }
+
+#divChk{
+    display: flex;
+    justify-content: space-around;
+}

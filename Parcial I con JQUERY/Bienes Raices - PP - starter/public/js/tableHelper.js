@@ -1,26 +1,27 @@
-//funciones utiles:
-//document.createElement("elemento")
-//setAttribute('atributo', 'valor');
-//appendChild(child);
-//createTextNode(valor);
-
 
 function crearTabla(array) {
-    var tabla = document.createElement("table");
-    tabla.className = "tabla";
+    let tbody = document.createElement("tbody");
+    let col = document.createElement("div");
+    col.className = "col-12";
+    let tabla = document.createElement("table");
+    tabla.className= "table tabla table-bordered table-striped table-hover";
 
     let cabecera = document.createElement("tr");
-    //Completando cabecera
-    for (headers in array[0]) {
-        let th = document.createElement("th");
-        th.textContent = headers;
-        cabecera.appendChild(th);
+    cabecera.className = "thead-dark";
+    //Completando cabecera}
+    for (headers in array[0]) {  
+            let th = document.createElement("th");
+            th.textContent = headers;
+            cabecera.appendChild(th);
+        
     }
-    tabla.appendChild(cabecera);
+    tbody.appendChild(cabecera)
+    tabla.appendChild(tbody);
 
     for (i in array) {
 
         let fila = document.createElement("tr");
+        fila.className = "table-primary";
         let objeto = array[i];
         for (j in objeto) {
             var celda = document.createElement("td");
@@ -28,7 +29,8 @@ function crearTabla(array) {
             celda.appendChild(dato);
             fila.appendChild(celda);
         }
-        tabla.appendChild(fila);
+        tbody.appendChild(fila);
+        tabla.appendChild(tbody);
     }
     return tabla;
 }
