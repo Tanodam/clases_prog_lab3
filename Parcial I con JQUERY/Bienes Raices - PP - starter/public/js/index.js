@@ -1,7 +1,7 @@
 //ATRIBUTOS DE ANUNCIO
 //id,titulo,transaccion,descripcion,precio,num_wc,num_estacionamiento,num_dormitorio;
 let primeraVez = true;
-$(function () {
+$(function() {
     inicializarManejadores();
 })
 
@@ -32,13 +32,12 @@ function manejadorModificar(e) {
 
 //////////////////////LLAMADAS AJAX/////////////////////////////////
 function cargarGrilla(array) {
-    let tabla = $(".col-12");
+    let tabla = $("#divTabla");
     tabla.html('');
     $('tbody', tabla);
 
-    if(primeraVez === true)
-    {
-        crearBoxes(datos,"divChk"); 
+    if (primeraVez === true) {
+        crearBoxes(datos, "divChk");
         primeraVez = false;
     }
     //checkbox.html('');
@@ -50,19 +49,22 @@ function cargarGrilla(array) {
 
 function filtrarDatos() {
     let opciones = ['id'];
+    //Aca recorro uno por uno todos los checkbox
     $('.box input:checked').each(function() {
         if ($(this).prop('checked') == true) {
+            ///Aca meto en un array todos los valores de los checkbox que esten tildados (titulo, descricion etc)
             opciones.push($(this).val());
         }
     });
     //Filtro por el valor del select
     let transaccion = $('#selTransaccion').val();
-    let datosFiltradosSel;
-    if(transaccion !== "Todos"){
-        datosFiltradosSel = datos.filter(obj => obj.transaccion === transaccion);
+    let cantBanios = $('#selBaños').val();
+    let datosFiltradosSel = datos;
+    if (transaccion !== "Todos") {
+        datosFiltradosSel = datosFiltradosSel.filter(obj => obj.transaccion === transaccion);
     }
-    else {
-        datosFiltradosSel = datos;
+    if (cantBanios !== "Todos") {
+        datosFiltradosSel = datosFiltradosSel.filter(obj => obj.num_wc >= cantBanios);
     }
     //Filtro por el valor de los checkbox
     let datosFiltradosChk = datosFiltradosSel.map(function(dato) {
