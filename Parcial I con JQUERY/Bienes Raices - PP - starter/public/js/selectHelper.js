@@ -1,18 +1,39 @@
-function crearSelect(array) {
-    // for (i in array){
-    //     //let atributo = array[i];
-    //     //for(atributo in )
-    // }
-    let transacciones = array.map(function(elemento) {
-        return elemento.transaccion;
-    });
-    let set = [...new Set(transacciones)];
+let selTransaccion;
 
-    let select = document.createElement("select");
-    for (elemento of set) {
-        let opcion = document.createElement("option");
-        opcion.innerText = elemento;
-        select.appendChild(opcion);
+window.addEventListener('load', function(){
+    selTransaccion = document.getElementById("selTransaccion");
+    cargarSelect(selTransaccion, obtenerTransacciones(datos));
+
+    selTransaccion.addEventListener('change', filtrarDatos);
+});
+
+function obtenerTransacciones(arr){
+    return arr.map(obj => obj.transaccion)
+                    .unique()
+                    .sort();
+}
+
+function cargarSelect(sel, arr){
+    limpiarSelect(sel);
+    let option = document.createElement('option');
+    option.value = "Todos";
+    option.textContent = "Todos";
+    sel.appendChild(option);
+    arr.forEach(element => {
+        let option = document.createElement('option');
+        option.value = element;
+        option.textContent = element;
+        sel.appendChild(option);
+    });
+}
+
+function limpiarSelect(sel){
+    //sel.options.length = 0;
+    while (sel.hasChildNodes()) {
+        sel.removeChild(sel.firstElementChild);
     }
-    return select;
+}
+
+Array.prototype.unique = function(){
+    return [...new Set(this)];
 }

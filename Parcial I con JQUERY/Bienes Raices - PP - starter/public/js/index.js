@@ -48,20 +48,32 @@ function cargarGrilla(array) {
 
 }
 
-function filtrarCheckbox() {
+function filtrarDatos() {
     let opciones = ['id'];
     $('.box input:checked').each(function() {
         if ($(this).prop('checked') == true) {
             opciones.push($(this).val());
         }
-    })
-    cargarGrilla(datos.map(function(dato) {
+    });
+    //Filtro por el valor del select
+    let transaccion = $('#selTransaccion').val();
+    let datosFiltradosSel;
+    if(transaccion !== "Todos"){
+        datosFiltradosSel = datos.filter(obj => obj.transaccion === transaccion);
+    }
+    else {
+        datosFiltradosSel = datos;
+    }
+    //Filtro por el valor de los checkbox
+    let datosFiltradosChk = datosFiltradosSel.map(function(dato) {
         let retorno = new Object();
         opciones.forEach(elemento => {
             retorno[elemento] = dato[elemento];
         });
         return retorno;
-    }))
+    });
+    //Vuelvo a cargar la tabla con los datos filtrados
+    cargarGrilla(datosFiltradosChk);
 }
 
 function altaAnuncio(nuevoAnuncio) {

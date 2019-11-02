@@ -1,5 +1,5 @@
 var datos = [
-{ "id": "1", "titulo": "Casa de Lujo en la montaña", "transaccion": "alquiler", "descripcion": "Casa en la montaña con excelente vista, acabados de lujo a un precio irresistible", "precio": "$4,500,0000", "num_wc": "3", "num_estacionamiento": "1", "num_dormitorio": "7"},
+{ "id": "1", "titulo": "Casa de Lujo en la montaña", "transaccion": "Alquiler", "descripcion": "Casa en la montaña con excelente vista, acabados de lujo a un precio irresistible", "precio": "$4,500,0000", "num_wc": "3", "num_estacionamiento": "1", "num_dormitorio": "7"},
 { "id": "2", "titulo": "Mansion de Lujo", "transaccion": "Venta", "descripcion": "Mansion de lujo con helipuerto a un precio irresistible. Ideal para transportarse facilmente", "precio": "$5,310,0000", "num_wc": "4", "num_estacionamiento": 4, "num_dormitorio": "5"},
 { "id": "3", "titulo": "Casa 3", "transaccion": "Alquiler", "descripcion": "Casa 1", "precio": "1500", "num_wc": "1", "num_dormitorio": "1", "num_estacionamiento": "1"},
 { "id": "4", "titulo": "Casa 4", "transaccion": "Venta", "descripcion": "Casa 2", "precio": "100000000", "num_wc": "1", "num_dormitorio": "1", "num_estacionamiento": "1"},
