@@ -137,28 +137,29 @@ function obtenerAnuncio(frm, tieneId) {
 function setValues(e) {
     let tr = e.target.parentElement;
     let nodos = tr.childNodes;
+    let dato = datos.filter(obj => obj.id === nodos[0].innerText);
     //ID
-    $("#idAnuncio").val(nodos[0].innerText);
+    $("#idAnuncio").val(dato[0].id);
     $("#idAnuncio").show();
     $("#lblId").show();
     //Titulo
-    $("#titulo").val(nodos[1].innerText);
+    $("#titulo").val(dato[0].titulo);
     //Transaccion
-    if (nodos[2].innerHTML == "Venta") {
+    if (dato[0].transaccion == "Venta") {
         $('#transaccionVenta').prop('checked', true);
     } else {
         $('#transaccionAlquiler').prop('checked', true);
     }
     //Descripcion
-    $("#descripcion").val(nodos[3].innerText);
+    $("#descripcion").val(dato[0].descripcion);
     //Precio
-    $("#precio").val(nodos[4].innerText);
+    $("#precio").val(dato[0].precio);
     //Num WC
-    $("#num_wc").val(nodos[5].innerText);
+    $("#num_wc").val(dato[0].num_wc);
     //Num Estancionamiento
-    $("#num_estacionamiento").val(nodos[6].innerText);
+    $("#num_estacionamiento").val(dato[0].num_estacionamiento);
     //Num Dormitorio
-    $("#num_dormitorio").val(nodos[7].innerText);
+    $("#num_dormitorio").val(dato[0].num_dormitorio);
 
     $("#btnCrearModificar").text("Modificar");
     $("#btnBorrar").show();
