@@ -1,15 +1,18 @@
 //ATRIBUTOS DE ANUNCIO
 //id,titulo,transaccion,descripcion,precio,num_wc,num_estacionamiento,num_dormitorio;
 let primeraVez = true;
-$(function() {
+let arrayAnuncios;
+$(function () {
     inicializarManejadores();
 })
 
 function inicializarManejadores() {
+    //localStorage.setItem("Anuncios", JSON.stringify(datos));
     $("#frm").submit(manejadorSubmit);
     //$("#btnBorrar").click(borrarAnuncio);
     $("#btnLimpiar").click(limpiarForm);
-    cargarGrilla(datos);
+    arrayAnuncios = JSON.parse(localStorage.getItem("Anuncios"));
+    cargarGrilla(arrayAnuncios); //reemplazar datoscon JSON.parse(localstorage.getItem("Anuncio"));
 
 
 }
@@ -25,8 +28,17 @@ function manejadorSubmit(e) {
 function manejadorModificar(e) {
     e.preventDefault();
     let anuncio = obtenerAnuncio(e.target, true);
-    //console.log(anuncio);
-    modificarAnuncio(anuncio);
+    console.log(anuncio);
+    //modificarAnuncio(anuncio, arrayAnuncios);
+    for(i=0; i<arrayAnuncios.length;i++)
+    {
+        if(arrayAnuncios[i].id === anuncio.id)
+        {
+            arrayAnuncios.splice(i, 2, anuncio);
+        }
+    }
+    localStorage.setItem("Anuncios", JSON.stringify(arrayAnuncios));
+    cargarGrilla(arrayAnuncios);
 
 }
 
@@ -50,7 +62,7 @@ function cargarGrilla(array) {
 function filtrarDatos() {
     let opciones = ['id'];
     //Aca recorro uno por uno todos los checkbox
-    $('.box input:checked').each(function() {
+    $('.box input:checked').each(function () {
         if ($(this).prop('checked') == true) {
             ///Aca meto en un array todos los valores de los checkbox que esten tildados (titulo, descricion etc)
             opciones.push($(this).val());
@@ -67,7 +79,7 @@ function filtrarDatos() {
         datosFiltradosSel = datosFiltradosSel.filter(obj => obj.num_wc >= cantBanios);
     }
     //Filtro por el valor de los checkbox
-    let datosFiltradosChk = datosFiltradosSel.map(function(dato) {
+    let datosFiltradosChk = datosFiltradosSel.map(function (dato) {
         let retorno = new Object();
         opciones.forEach(elemento => {
             retorno[elemento] = dato[elemento];
@@ -79,7 +91,10 @@ function filtrarDatos() {
 }
 
 function altaAnuncio(nuevoAnuncio) {
-    alert("Ya no anda esto maestro, no rompas las bolas");
+    //alert("Ya no anda esto maestro, no rompas las bolas");
+    arrayAnuncios.push(nuevoAnuncio);
+    localStorage.setItem("Anuncios", JSON.stringify(arrayAnuncios));
+    cargarGrilla(arrayAnuncios);
 
 }
 
@@ -123,10 +138,10 @@ function obtenerAnuncio(frm, tieneId) {
                     id = element.value;
                 } else {
                     id = element.value;
-                    // ids = datos.map(element => element.id).sort(function (a, b) { return a - b; });
-                    // ultimoId = ids[ids.length - 1];
-                    // ultimoId++;
-                    // id = ultimoId;
+                    ids = arrayAnuncios.map(element => element.id).sort(function (a, b) { return a - b; });
+                    ultimoId = ids[ids.length - 1];
+                    ultimoId++;
+                    id = ultimoId.toString();
                 }
                 break;
         }
@@ -137,7 +152,7 @@ function obtenerAnuncio(frm, tieneId) {
 function setValues(e) {
     let tr = e.target.parentElement;
     let nodos = tr.childNodes;
-    let dato = datos.filter(obj => obj.id === nodos[0].innerText);
+    let dato = arrayAnuncios.filter(obj => obj.id === nodos[0].innerText);
     //ID
     $("#idAnuncio").val(dato[0].id);
     $("#idAnuncio").show();
