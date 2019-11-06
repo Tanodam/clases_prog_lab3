@@ -1,3 +1,5 @@
+///  <reference path="hello.ts"/>
+
 let mens:string;
-mens = 'Chau Mundo';
+mens = 'Chau Mundoss';
 console.log(mens);
