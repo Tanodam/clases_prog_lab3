@@ -21,8 +21,8 @@ console.log(Eheroe[Eheroe.Avenger]);
 for (var key in Eheroe) {
     console.log(key);
 }
-//Funciones
-var funcionEnviarMision = function (heroe) {
+//Funciones                                 Esto indica un parametro por defecto
+var funcionEnviarMision = function (heroe /*="Spiderman"*/) {
     return heroe + " enviado";
 };
 var retorno = funcionEnviarMision("Spiderman");

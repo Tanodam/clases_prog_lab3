@@ -21,8 +21,8 @@ for(let key in Eheroe)
     console.log(key);
 }
 
-//Funciones
-let funcionEnviarMision = function(heroe?:string):string {// ? indica que es un parametro opcional
+//Funciones                                 Esto indica un parametro por defecto
+let funcionEnviarMision = function(heroe?:string/*="Spiderman"*/):string {// ? indica que es un parametro opcional
     return heroe + " enviado";
 }
 
