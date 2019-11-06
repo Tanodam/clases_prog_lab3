@@ -28,7 +28,7 @@ function manejadorSubmit(e) {
 function manejadorModificar(e) {
     e.preventDefault();
     let anuncio = obtenerAnuncio(e.target, true);
-    console.log(anuncio);
+    //console.log(anuncio);
     //modificarAnuncio(anuncio, arrayAnuncios);
     for(i=0; i<arrayAnuncios.length;i++)
     {
@@ -38,7 +38,10 @@ function manejadorModificar(e) {
         }
     }
     localStorage.setItem("Anuncios", JSON.stringify(arrayAnuncios));
+    let checkboxs = $('.box input');
+    checkboxs.prop("checked", true);
     cargarGrilla(arrayAnuncios);
+
 
 }
 
@@ -71,7 +74,7 @@ function filtrarDatos() {
     //Filtro por el valor del select
     let transaccion = $('#selTransaccion').val();
     let cantBanios = $('#selBaños').val();
-    let datosFiltradosSel = datos;
+    let datosFiltradosSel = arrayAnuncios;
     if (transaccion !== "Todos") {
         datosFiltradosSel = datosFiltradosSel.filter(obj => obj.transaccion === transaccion);
     }
