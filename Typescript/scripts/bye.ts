@@ -2,4 +2,4 @@
 
 let mens:string;
 mens = 'Chau Mundoss';
-console.log(mens);
+//console.log(mens);
