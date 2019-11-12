@@ -7,11 +7,14 @@ $(function () {
 })
 
 function inicializarManejadores() {
-    //localStorage.setItem("Anuncios", JSON.stringify(datos));
     $("#frm").submit(manejadorSubmit);
+    $("#lblId").hide();
+    $("#idAnuncio").hide();
     //$("#btnBorrar").click(borrarAnuncio);
     $("#btnLimpiar").click(limpiarForm);
+    localStorage.setItem("Anuncios", JSON.stringify(datos));
     arrayAnuncios = JSON.parse(localStorage.getItem("Anuncios"));
+
     cargarGrilla(arrayAnuncios); //reemplazar datoscon JSON.parse(localstorage.getItem("Anuncio"));
 
 
@@ -65,7 +68,7 @@ function cargarGrilla(array) {
 function filtrarDatos() {
     let opciones = ['id'];
     //Aca recorro uno por uno todos los checkbox
-    $('.box input:checked').each(function () {
+    $('#box input:checked').each(function () {
         if ($(this).prop('checked') == true) {
             ///Aca meto en un array todos los valores de los checkbox que esten tildados (titulo, descricion etc)
             opciones.push($(this).val());

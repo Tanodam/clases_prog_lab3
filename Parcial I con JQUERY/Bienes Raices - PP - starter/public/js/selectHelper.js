@@ -2,12 +2,12 @@ let selTransaccion;
 let selBanios;
 
 window.addEventListener('load', function() {
-    selTransaccion = document.getElementById("selTransaccion");
-    selBanios = document.getElementById("selBaños");
-    cargarSelect(selTransaccion, obtenerTransacciones(datos));
-    cargarSelect(selBanios, obtenerBanios(datos));
-    selTransaccion.addEventListener('change', filtrarDatos);
-    selBanios.addEventListener('change', filtrarDatos);
+    //selTransaccion = document.getElementById("selTransaccion");
+    //selBanios = document.getElementById("selBaños");
+    //cargarSelect(selTransaccion, obtenerTransacciones(datos));
+    //cargarSelect(selBanios, obtenerBanios(datos));
+    //selTransaccion.addEventListener('change', filtrarDatos);
+    //selBanios.addEventListener('change', filtrarDatos);
 });
 
 function obtenerTransacciones(arr) {
