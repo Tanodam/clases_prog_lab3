@@ -169,3 +169,21 @@ class AvengerHerdado2 extends Avenger2{
 
 let ah2:AvengerHerdado2 = new AvengerHerdado2("Herdado2",44);
 console.log("heredado2: " + ah2.edad + "nombre: " + ah2.nombre );
+
+
+//namespaces
+namespace Funciones{
+    export function f1() {
+        console.log("Yo soy f1")
+    }
+    export function f2() {
+        console.log("Yo soy f2")
+    }
+}
+
+Funciones.f1();
+Funciones.f2();
+$(function(){
+    console.log("ready");
+})
+

@@ -6,3 +6,4 @@
 6. descomentar outfile y colocar "./output.js"
 7. cambiar module poner amd
 8. paro tsc descomento sourcemap, arranco de nuevo, debe aparecer output.js.map
+9. para jquery npm i @types/jquery y despues npm i jquery, despues referenciarlo antes del output.js
