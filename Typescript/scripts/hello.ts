@@ -106,3 +106,66 @@ miFuncion = (num1,num2)=>num1+num2;
 console.log(miFuncion(1,4));
 
 //clases
+class Avenger2 implements IHeroe{
+    nombre:string = "un Avenger";
+
+    constructor(nombre:string){
+        this.nombre = nombre;
+    }
+}
+
+let av2 = new Avenger2("Hulk");
+console.log("Clase: " + av2.nombre);
+
+
+//Calss con atributo privado
+class Avenger3{
+    private _nombre:string = "un Avenger";
+    private _edad:number = 24;
+    constructor(nombre:string, edad:number){
+        this._nombre = nombre;
+        this._edad = edad;
+    }
+    get edad():number{
+        return this._edad;
+    }
+    set edad(e:number){
+        this._edad = e;
+    }
+
+    public mostrar = ()=>this._nombre;
+
+}
+
+//hacerlo conanuncio, constructor, getter y setter con atribuyos privados
+
+let av3 = new Avenger3("Ironman", 23);
+console.log("Clase: " + av3.mostrar());
+av3.edad = 35;
+console.log("edad: " + av3.edad);
+
+//clases con metodos estaticos
+class Xmen{
+    static nombre_de_clase = "Xmen";
+}
+
+console.log("atributo estatico: "+ Xmen.nombre_de_clase);
+
+//Herencia
+class AvengerHeredado extends Avenger2{
+
+}
+let ah = new AvengerHeredado("Hulk Heredado");
+console.log(ah.nombre);
+
+//Herencia2
+class AvengerHerdado2 extends Avenger2{
+    edad:number=0;
+    constructor(nombre:string,edad:number){
+        super(nombre);
+        this.edad=edad;
+    }
+}
+
+let ah2:AvengerHerdado2 = new AvengerHerdado2("Herdado2",44);
+console.log("heredado2: " + ah2.edad + "nombre: " + ah2.nombre );
