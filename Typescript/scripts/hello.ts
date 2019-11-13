@@ -186,4 +186,3 @@ Funciones.f2();
 $(function(){
     console.log("ready");
 })
-
