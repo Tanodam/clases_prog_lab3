@@ -1,5 +1,5 @@
 let arrayAnuncios;
-let primeraVez;
+let primeraVez = true;
 let arrayLegisladores = [];
 $(function () {
     inicializarManejadores();
@@ -46,7 +46,7 @@ function manejadorModificar(e) {
 }
 
 function manejadorBorrar() {
-    
+
     let id = $("#idLegislador").val();
     for (i = 0; i < arrayLegisladores.length; i++) {
         if (arrayLegisladores[i].id === id) {
@@ -54,24 +54,58 @@ function manejadorBorrar() {
         }
     }
     localStorage.setItem("Legisladores", JSON.stringify(arrayLegisladores));
-    // let checkboxs = $('.box input');
-    // checkboxs.prop("checked", true);
+    let checkboxs = $('.box input');
+    checkboxs.prop("checked", true);
     cargarGrilla(arrayLegisladores);
 }
 //////////////////////LLAMADAS AJAX/////////////////////////////////
 function cargarGrilla(array) {
     let tabla = $("#divTabla");
+    let checkbox = $("divChk");
     tabla.html('');
     $('tbody', tabla);
 
-    // if (primeraVez === true) {
-    //     crearBoxes(datos, "divChk");
-    //     primeraVez = false;
-    // }
-    //checkbox.html('');
+    if (primeraVez === true) {
+        crearBoxes(arrayLegisladores, "divChk");
+        primeraVez = false;
+    }
+    checkbox.html('');
     tabla.append(crearTabla(array));
     let tds = $("td");
     tds.on("click", setValues);
+}
+function filtrarDatos() {
+    let opciones = ['id'];
+    //Aca recorro uno por uno todos los checkbox
+    $('.box input:checked').each(function () {
+        if ($(this).prop('checked') == true) {
+            ///Aca meto en un array todos los valores de los checkbox que esten tildados (titulo, descricion etc)
+            opciones.push($(this).val());
+        }
+    });
+    console.log(opciones);
+    //Filtro por el valor del select
+    /*let transaccion = $('#selTransaccion').val();
+    let cantBanios = $('#selBaños').val();
+    let datosFiltradosSel = arrayAnuncios;
+    if (transaccion !== "Todos") {
+        datosFiltradosSel = datosFiltradosSel.filter(obj => obj.transaccion === transaccion);
+    }
+    if (cantBanios !== "Todos") {
+        datosFiltradosSel = datosFiltradosSel.filter(obj => obj.num_wc >= cantBanios);
+    }
+    */
+    //Filtro por el valor de los checkbox
+    let datosFiltradosChk = arrayLegisladores.map(function (dato) {
+        let retorno = new Object();
+        
+        opciones.forEach(elemento => {
+            retorno[elemento] = dato[elemento];
+        });
+        return retorno;
+    });
+    //Vuelvo a cargar la tabla con los datos filtrados
+    cargarGrilla(datosFiltradosChk);
 }
 
 
@@ -134,7 +168,6 @@ function setValues(e) {
     let tr = e.target.parentElement;
     let nodos = tr.childNodes;
     let dato = arrayLegisladores.filter(obj => obj.id === nodos[0].innerText);
-    console.log(dato);
     //ID
     $("#idLegislador").val(dato[0].id);
     $("#idLegislador").show();
@@ -165,7 +198,7 @@ function setValues(e) {
     $("#frm").off('submit', manejadorSubmit);
     $("#frm").submit(manejadorModificar);
     $("#btnLimpiar").show();
-    
+
 }
 
 function limpiarForm() {
