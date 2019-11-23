@@ -9,7 +9,10 @@ function inicializarManejadores() {
     $("#frm").submit(manejadorSubmit);
     $("#lblId").hide();
     $("#idLegislador").hide();
-    //$("#btnLimpiar").click(limpiarForm);
+    $("#btnLimpiar").hide();
+    $("#btnBorrar").hide();
+    $("#btnBorrar").click(manejadorBorrar);
+    $("#btnLimpiar").click(limpiarForm);
     arrayObjetos = JSON.parse(localStorage.getItem("Legisladores"));
     arrayObjetos.forEach(object => {
         let legislador = new Legislador(object.id, object.nombre, object.apellido, object.edad, object.email, object.sexo, object.tipo)
@@ -24,24 +27,51 @@ function manejadorSubmit(e) {
     arrayLegisladores.push(nuevoLegislador);
     localStorage.setItem("Legisladores", JSON.stringify(arrayLegisladores));
     cargarGrilla(arrayLegisladores);
+    limpiarForm();
 
 }
 
+function manejadorModificar(e) {
+    e.preventDefault();
+    let legislador = obtenerLegislador(e.target, true);
+    for (i = 0; i < arrayLegisladores.length; i++) {
+        if (arrayLegisladores[i].id === legislador.id) {
+            arrayLegisladores.splice(i, 1, legislador);
+        }
+    }
+    localStorage.setItem("Legisladores", JSON.stringify(arrayLegisladores));
+    // let checkboxs = $('.box input');
+    // checkboxs.prop("checked", true);
+    cargarGrilla(arrayLegisladores);
+}
+
+function manejadorBorrar() {
+    
+    let id = $("#idLegislador").val();
+    for (i = 0; i < arrayLegisladores.length; i++) {
+        if (arrayLegisladores[i].id === id) {
+            arrayLegisladores.splice(i, 1);
+        }
+    }
+    localStorage.setItem("Legisladores", JSON.stringify(arrayLegisladores));
+    // let checkboxs = $('.box input');
+    // checkboxs.prop("checked", true);
+    cargarGrilla(arrayLegisladores);
+}
 //////////////////////LLAMADAS AJAX/////////////////////////////////
 function cargarGrilla(array) {
     let tabla = $("#divTabla");
     tabla.html('');
     $('tbody', tabla);
 
-    if (primeraVez === true) {
-        crearBoxes(datos, "divChk");
-        primeraVez = false;
-    }
+    // if (primeraVez === true) {
+    //     crearBoxes(datos, "divChk");
+    //     primeraVez = false;
+    // }
     //checkbox.html('');
     tabla.append(crearTabla(array));
     let tds = $("td");
-    //tds.on("click", setValues);
-
+    tds.on("click", setValues);
 }
 
 
@@ -83,14 +113,13 @@ function obtenerLegislador(frm, tieneId) {
                     id = element.value;
                 } else {
                     arrayObjetos = JSON.parse(localStorage.getItem("Legisladores"));
-                    if(arrayObjetos.length !== 0)
-                    {
+                    if (arrayObjetos.length !== 0) {
                         ids = arrayObjetos.map(element => element.id).sort(function (a, b) { return a - b; });
                         ultimoId = ids[ids.length - 1];
                         ultimoId++;
                         id = ultimoId.toString();
                     }
-                    else{
+                    else {
                         id = 1;
                     }
                 }
@@ -101,5 +130,58 @@ function obtenerLegislador(frm, tieneId) {
     return legislador;
 }
 
+function setValues(e) {
+    let tr = e.target.parentElement;
+    let nodos = tr.childNodes;
+    let dato = arrayLegisladores.filter(obj => obj.id === nodos[0].innerText);
+    console.log(dato);
+    //ID
+    $("#idLegislador").val(dato[0].id);
+    $("#idLegislador").show();
+    $("#lblId").show();
+    //Nombre
+    $("#txtNombre").val(dato[0].nombre);
+    //Sexo
+    if (dato[0].sexo == "Masculino") {
+        $('#sexoMasculino').prop('checked', true);
+    } else {
+        $('#sexoFemenino').prop('checked', true);
+    }
+    //Tipo
+    if (dato[0].tipo == "Diputado") {
+        $('#tipoDiputado').prop('checked', true);
+    } else {
+        $('#tipoSenador').prop('checked', true);
+    }
+    //Apellido
+    $("#txtApellido").val(dato[0].apellido);
+    //Email
+    $("#txtEmail").val(dato[0].email);
+    //Edad
+    $("#numEdad").val(dato[0].edad);
 
+    $("#btnCrearModificar").text("Modificar");
+    $("#btnBorrar").show();
+    $("#frm").off('submit', manejadorSubmit);
+    $("#frm").submit(manejadorModificar);
+    $("#btnLimpiar").show();
+    
+}
 
+function limpiarForm() {
+    $("#idLegislador").hide();
+    $("#lblId").hide()
+    $("#txtNombre").val("");
+    $("#txtApellido").val("");
+    $("#txtEmail").val("");
+    $("#numEdad").val("18");
+    $('#sexoMasculino').prop('checked', true);
+    $('#tipoDiputado').prop('checked', true);
+
+    $("#btnCrearModificar").text("Crear");
+    $("#btnLimpiar").hide();
+    $("#btnBorrar").hide();
+    $("#frm").off('submit', manejadorModificar);
+    $("#frm").submit(manejadorSubmit);
+
+}
