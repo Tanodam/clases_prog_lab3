@@ -1,20 +1,23 @@
-
 function crearTabla(array) {
     let tbody = document.createElement("tbody");
     let col = document.createElement("div");
     col.className = "col-12";
     let tabla = document.createElement("table");
-    tabla.className= "table tabla table-bordered table-striped table-hover";
-
+    tabla.className = "table tabla table-bordered table-striped table-hover";;
     let cabecera = document.createElement("tr");
     cabecera.className = "thead-dark";
     //Completando cabecera}
-    for (headers in array[0]) {  
+    for (header in array[0]) {
+
+        if(checkType(header) == '0' && header != 'constructor')
+        {
+
             let th = document.createElement("th");
-            th.textContent = headers;
+            th.textContent = header;
             cabecera.appendChild(th);
-        
+        }
     }
+    //console.log(array);
     tbody.appendChild(cabecera)
     tabla.appendChild(tbody);
 
@@ -24,13 +27,32 @@ function crearTabla(array) {
         fila.className = "table-primary";
         let objeto = array[i];
         for (j in objeto) {
-            var celda = document.createElement("td");
-            var dato = document.createTextNode(objeto[j]);
-            celda.appendChild(dato);
-            fila.appendChild(celda);
+            if(checkType(j) == '0' && j != 'constructor')
+            {
+                var celda = document.createElement("td");
+                var dato = document.createTextNode(objeto[j]);
+                celda.appendChild(dato);
+                fila.appendChild(celda);
+            }
         }
         tbody.appendChild(fila);
         tabla.appendChild(tbody);
+
     }
     return tabla;
+}
+
+
+function checkType(words) {
+    words = String(words).trim();
+    const regxs = {
+        "lower": /^[a-z0-9 ]+$/,
+        "upper": /^[A-Z0-9 ]+$/,
+        "upperLower": /^[A-Za-z0-9 ]+$/
+    }
+
+    if (regxs.lower.test(words)) return '0';
+    if (regxs.upper.test(words)) return '1';
+    if (regxs.upperLower.test(words)) return '2';
+    return -1;
 }

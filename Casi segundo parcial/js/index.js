@@ -1,4 +1,6 @@
 let arrayAnuncios;
+let primeraVez;
+let arrayLegisladores = [];
 $(function () {
     inicializarManejadores();
 })
@@ -7,9 +9,12 @@ function inicializarManejadores() {
     $("#frm").submit(manejadorSubmit);
     $("#lblId").hide();
     $("#idAnuncio").hide();
-    $("#btnLimpiar").click(limpiarForm);
-    arrayLegisladores = JSON.parse(localStorage.getItem("Legisladores"));
-
+    //$("#btnLimpiar").click(limpiarForm);
+    arrayObjetos = JSON.parse(localStorage.getItem("Legisladores"));
+    arrayObjetos.forEach(object => {
+        let legislador = new Legislador(object.id, object.nombre, object.apellido, object.edad, object.email, object.sexo, object.tipo)
+        arrayLegisladores.push(legislador);
+    });
     cargarGrilla(arrayLegisladores);
 }
 
@@ -34,7 +39,7 @@ function cargarGrilla(array) {
     //checkbox.html('');
     tabla.append(crearTabla(array));
     let tds = $("td");
-    tds.on("click", setValues);
+    //tds.on("click", setValues);
 
 }
 
@@ -85,7 +90,6 @@ function obtenerAnuncio(frm, tieneId) {
         }
     }
     let a = new Legislador(1, nombre, apellido, edad, email, radioSexo, radioTipo);
-    console.log(a);
     return a;
 }
 
