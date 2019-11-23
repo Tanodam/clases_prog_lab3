@@ -8,7 +8,7 @@ $(function () {
 function inicializarManejadores() {
     $("#frm").submit(manejadorSubmit);
     $("#lblId").hide();
-    $("#idAnuncio").hide();
+    $("#idLegislador").hide();
     //$("#btnLimpiar").click(limpiarForm);
     arrayObjetos = JSON.parse(localStorage.getItem("Legisladores"));
     arrayObjetos.forEach(object => {
@@ -20,9 +20,10 @@ function inicializarManejadores() {
 
 function manejadorSubmit(e) {
     e.preventDefault();
-    let nuevoAnuncio = obtenerAnuncio(e.target, false);
-    //console.log(nuevoAnuncio);
-    altaAnuncio(nuevoAnuncio);
+    let nuevoLegislador = obtenerLegislador(e.target, false);
+    arrayLegisladores.push(nuevoLegislador);
+    localStorage.setItem("Legisladores", JSON.stringify(arrayLegisladores));
+    cargarGrilla(arrayLegisladores);
 
 }
 
@@ -44,13 +45,14 @@ function cargarGrilla(array) {
 }
 
 
-function obtenerAnuncio(frm, tieneId) {
+function obtenerLegislador(frm, tieneId) {
     let nombre;
     let apellido;
     let email;
     let edad;
     let radioTipo;
     let radioSexo;
+    let id;
 
     for (element of frm.elements) {
         switch (element.name) {
@@ -76,21 +78,27 @@ function obtenerAnuncio(frm, tieneId) {
                     radioTipo = element.value;
                 }
                 break;
-            /*case "idLegislador":
+            case "idLegislador":
                 if (tieneId === true) {
                     id = element.value;
                 } else {
-                    id = element.value;
-                    ids = arrayAnuncios.map(element => element.id).sort(function (a, b) { return a - b; });
-                    ultimoId = ids[ids.length - 1];
-                    ultimoId++;
-                    id = ultimoId.toString();
+                    arrayObjetos = JSON.parse(localStorage.getItem("Legisladores"));
+                    if(arrayObjetos.length !== 0)
+                    {
+                        ids = arrayObjetos.map(element => element.id).sort(function (a, b) { return a - b; });
+                        ultimoId = ids[ids.length - 1];
+                        ultimoId++;
+                        id = ultimoId.toString();
+                    }
+                    else{
+                        id = 1;
+                    }
                 }
-                break;*/
+                break;
         }
     }
-    let a = new Legislador(1, nombre, apellido, edad, email, radioSexo, radioTipo);
-    return a;
+    let legislador = new Legislador(id, nombre, apellido, edad, email, radioSexo, radioTipo);
+    return legislador;
 }
 
 

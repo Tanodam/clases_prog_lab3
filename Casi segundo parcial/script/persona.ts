@@ -1,12 +1,12 @@
 class Persona
 {
+    protected id:any;
     protected nombre:string;
     protected apellido:string;
     protected edad:number;
     protected email:string;
     protected sexo:string;
-    protected id:any;
-
+    
     constructor(id:any,nombre: string, apellido: string, edad: number, email: string, sexo:string) {
         this.id = id;
         this.nombre = nombre;
@@ -15,7 +15,7 @@ class Persona
         this.email = email;
         this.sexo = sexo;
     }
-
+    
     // Setters & Getters
     get Nombre():string{return this.nombre;};
     set Nombre(e:string){this.nombre = e};
@@ -34,9 +34,12 @@ class Persona
 
     get Id():string{return this.id;};
     set Id(e:string){this.id = e};
+
+
 }
 
 enum tipoLegislador{
     Diputado,
     Senador
 }
+
