@@ -18,6 +18,8 @@ function inicializarManejadores() {
         let legislador = new Legislador(object.id, object.nombre, object.apellido, object.edad, object.email, object.sexo, object.tipo)
         arrayLegisladores.push(legislador);
     });
+    calcularEdad(arrayLegisladores);
+    calcularGenderMix(arrayLegisladores);
     cargarGrilla(arrayLegisladores);
 }
 
@@ -27,6 +29,7 @@ function manejadorSubmit(e) {
     arrayLegisladores.push(nuevoLegislador);
     localStorage.setItem("Legisladores", JSON.stringify(arrayLegisladores));
     cargarGrilla(arrayLegisladores);
+    reestablecerBoxes();
     limpiarForm();
 
 }
@@ -40,8 +43,8 @@ function manejadorModificar(e) {
         }
     }
     localStorage.setItem("Legisladores", JSON.stringify(arrayLegisladores));
-    // let checkboxs = $('.box input');
-    // checkboxs.prop("checked", true);
+    reestablecerBoxes()
+    limpiarForm();
     cargarGrilla(arrayLegisladores);
 }
 
@@ -54,11 +57,11 @@ function manejadorBorrar() {
         }
     }
     localStorage.setItem("Legisladores", JSON.stringify(arrayLegisladores));
-    let checkboxs = $('.box input');
-    checkboxs.prop("checked", true);
+    reestablecerBoxes()
+    limpiarForm();
     cargarGrilla(arrayLegisladores);
 }
-//////////////////////LLAMADAS AJAX/////////////////////////////////
+
 function cargarGrilla(array) {
     let tabla = $("#divTabla");
     let checkbox = $("divChk");
@@ -83,20 +86,17 @@ function filtrarDatos() {
             opciones.push($(this).val());
         }
     });
-    console.log(opciones);
     //Filtro por el valor del select
-    /*let transaccion = $('#selTransaccion').val();
-    let cantBanios = $('#selBaños').val();
-    let datosFiltradosSel = arrayAnuncios;
-    if (transaccion !== "Todos") {
-        datosFiltradosSel = datosFiltradosSel.filter(obj => obj.transaccion === transaccion);
+    let tipo = $('#selTipo').val();
+    let datosFiltradosSel = arrayLegisladores;
+    if (tipo !== "Todos") {
+        datosFiltradosSel = datosFiltradosSel.filter(obj => obj.tipo === tipo);
     }
-    if (cantBanios !== "Todos") {
-        datosFiltradosSel = datosFiltradosSel.filter(obj => obj.num_wc >= cantBanios);
-    }
-    */
+    calcularEdad(datosFiltradosSel);
+    calcularGenderMix(datosFiltradosSel);
+    
     //Filtro por el valor de los checkbox
-    let datosFiltradosChk = arrayLegisladores.map(function (dato) {
+    let datosFiltradosChk = datosFiltradosSel.map(function (dato) {
         let retorno = new Object();
         
         opciones.forEach(elemento => {
@@ -154,7 +154,7 @@ function obtenerLegislador(frm, tieneId) {
                         id = ultimoId.toString();
                     }
                     else {
-                        id = 1;
+                        id = "1";
                     }
                 }
                 break;
@@ -218,3 +218,23 @@ function limpiarForm() {
     $("#frm").submit(manejadorSubmit);
 
 }
+
+function reestablecerBoxes()
+{
+    let checkboxs = $('.box input');
+    checkboxs.prop("checked", true);
+}
+
+function calcularEdad(arr) {
+    let promedio = arr.map(obj => parseInt(obj.edad))
+        .reduce((prev, curr) => (prev + curr))/arr.length;
+    //$('#txtInfoEdad').val(promedio.toFixed(2));
+}
+
+function calcularGenderMix(arr) {
+    let cantidadLegisladores = arr.length;
+    let cantidadMujeres = arr.filter(obj => obj.sexo === "Femenino").length;
+    let genderMix = (cantidadMujeres/cantidadLegisladores) * 100;
+    $('#txtInfoEdad').val(genderMix.toFixed(2));
+}
+
