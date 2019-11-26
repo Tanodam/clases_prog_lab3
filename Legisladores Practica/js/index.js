@@ -1,10 +1,21 @@
-let primeraVez = true;
-let arrayLegisladores = [];
-$(function () {
-    inicializarManejadores();
-})
+//TODO: margins
+//TODO: poner los radios en una row cuando son md
+//TODO: pasar el id a int
+//TODO: cuando todo ande, ver que se puede dejar sin reinicializar de estos (tabla, select y checkbox)
 
-function inicializarManejadores() {
+let primeraVez = true;
+
+function obtenerArrayLegisladores(){
+    let arrayLegisladores = [];
+    arrayObjetos = JSON.parse(localStorage.getItem("Legisladores"));
+    arrayObjetos.forEach(object => {
+        let legislador = new Legislador(object.id, object.nombre, object.apellido, object.edad, object.email, object.sexo, object.tipo)
+        arrayLegisladores.push(legislador);
+    });
+    return arrayLegisladores;
+}
+
+$(function () {
     $("#frm").submit(manejadorSubmit);
     $("#lblId").hide();
     $("#idLegislador").hide();
@@ -12,52 +23,52 @@ function inicializarManejadores() {
     $("#btnBorrar").hide();
     $("#btnBorrar").click(manejadorBorrar);
     $("#btnLimpiar").click(limpiarForm);
-    arrayObjetos = traerData();
-    arrayObjetos.forEach(object => {
-        let legislador = new Legislador(object.id, object.nombre, object.apellido, object.edad, object.email, object.sexo, object.tipo)
-        arrayLegisladores.push(legislador);
-    });
-    calcularEdad(arrayLegisladores);
-    calcularGenderMix(arrayLegisladores);
-    console.log(arrayLegisladores);
+    let arrayLegisladores = obtenerArrayLegisladores();
+    calcularInfo(arrayLegisladores);
     cargarGrilla(arrayLegisladores);
-}
-/* 
-            LOCAL STORAGE
+})
 
-*/
-function traerData()
-{
-    array = JSON.parse(localStorage.getItem("Legisladores"));
-    return array;
+function manejadorSubmit(e) {
+    let arrayLegisladores = obtenerArrayLegisladores();
+    e.preventDefault();
+  //  let nuevoLegislador = obtenerLegislador(e.target, false);
+    let nuevoLegislador = Controller.alta(arrayLegisladores);
+    arrayLegisladores.push(nuevoLegislador);
+    reestablecerPagina(arrayLegisladores);
 }
-function cargarData(array)
-{
-    localStorage.setItem("Legisladores", JSON.stringify(array));
-}
-/* 
-          TERMINA LOCAL STORAGE
-*/
 
-function cargarGrilla(array) {
+function manejadorModificar(e) {
+    let arrayLegisladores = obtenerArrayLegisladores();
+    e.preventDefault();
+    arrayLegisladores = Controller.modificar(arrayLegisladores);
+    reestablecerPagina(arrayLegisladores);
+}
+
+function manejadorBorrar() {
+    let arrayLegisladores = obtenerArrayLegisladores();
+    arrayLegisladores = Controller.baja(arrayLegisladores);
+    reestablecerPagina(arrayLegisladores);
+}
+
+function cargarGrilla(arrayFiltrados) {
     let tabla = $("#divTabla");
     let checkbox = $("divChk");
     tabla.html('');
     $('tbody', tabla);
 
     if (primeraVez === true) {
+        let arrayLegisladores = obtenerArrayLegisladores();
         crearBoxes(arrayLegisladores, "divChk");
         primeraVez = false;
     }
     checkbox.html('');
-    tabla.append(crearTabla(array));
-    cargarSelect(selTipo, obtenerTipo(arrayLegisladores));
+    tabla.append(crearTabla(arrayFiltrados));
     let tds = $("td");
     tds.on("click", setValues);
 }
 
-
 function filtrarDatos() {
+    let arrayLegisladores = obtenerArrayLegisladores();
     let opciones = ['id'];
     //Aca recorro uno por uno todos los checkbox
     $('.box input:checked').each(function () {
@@ -72,73 +83,21 @@ function filtrarDatos() {
     if (tipo !== "Todos") {
         datosFiltradosSel = datosFiltradosSel.filter(obj => obj.tipo === tipo);
     }
-    calcularEdad(datosFiltradosSel);
-    calcularGenderMix(datosFiltradosSel);
+    calcularInfo(datosFiltradosSel);
+    
     //Filtro por el valor de los checkbox
     let datosFiltradosChk = datosFiltradosSel.map(function (dato) {
         let retorno = new Object();
-        
         opciones.forEach(elemento => {
             retorno[elemento] = dato[elemento];
         });
         return retorno;
     });
-    
     //Vuelvo a cargar la tabla con los datos filtrados
     cargarGrilla(datosFiltradosChk);
 }
 
-/*
-                    ABM                         
 
-*/
-
-function manejadorSubmit(e) {
-    e.preventDefault();
-    let nuevoLegislador = obtenerLegislador(e.target, false);
-    arrayLegisladores.push(nuevoLegislador);
-    cargarData(arrayLegisladores);
-    cargarGrilla(arrayLegisladores);
-    filtrarDatos();
-    reestablecerBoxes();
-    limpiarForm();
-
-}
-
-function manejadorModificar(e) {
-    e.preventDefault();
-    let legislador = obtenerLegislador(e.target, true);
-    for (i = 0; i < arrayLegisladores.length; i++) {
-        if (arrayLegisladores[i].id === legislador.id) {
-            arrayLegisladores.splice(i, 1, legislador);
-        }
-    }
-    cargarData(arrayLegisladores);
-    reestablecerBoxes()
-    filtrarDatos();
-    limpiarForm();
-    cargarGrilla(arrayLegisladores);
-}
-
-function manejadorBorrar() {
-
-    let id = $("#idLegislador").val();
-    for (i = 0; i < arrayLegisladores.length; i++) {
-        if (arrayLegisladores[i].id === id) {
-            arrayLegisladores.splice(i, 1);
-        }
-    }
-    cargarData(arrayLegisladores);
-    reestablecerBoxes();
-    limpiarForm();
-    cargarGrilla(arrayLegisladores);
-}
-
-/*
-
-            TERMINA ABM
-
-*/
 function obtenerLegislador(frm, tieneId) {
     let nombre;
     let apellido;
@@ -195,10 +154,11 @@ function obtenerLegislador(frm, tieneId) {
 }
 
 function setValues(e) {
+    let arrayLegisladores = obtenerArrayLegisladores();
     let tr = e.target.parentElement;
     let nodos = tr.childNodes;
-    let dato = arrayLegisladores.filter(obj => obj.id === nodos[0].innerText);
-    //ID
+    let dato = arrayLegisladores.filter(obj => obj.id == nodos[0].innerText);
+        //ID
     $("#idLegislador").val(dato[0].id);
     $("#idLegislador").show();
     $("#lblId").show();
@@ -228,7 +188,15 @@ function setValues(e) {
     $("#frm").off('submit', manejadorSubmit);
     $("#frm").submit(manejadorModificar);
     $("#btnLimpiar").show();
+}
 
+function reestablecerPagina(arr) {
+    localStorage.setItem("Legisladores", JSON.stringify(arr));
+    reestablecerBoxes(arr);
+    cargarDatosSelect();
+    limpiarForm();
+    calcularInfo(arr);
+    cargarGrilla(arr);
 }
 
 function limpiarForm() {
@@ -237,7 +205,7 @@ function limpiarForm() {
     $("#txtNombre").val("");
     $("#txtApellido").val("");
     $("#txtEmail").val("");
-    $("#numEdad").val("18");
+    $("#numEdad").val("0");
     $('#sexoMasculino').prop('checked', true);
     $('#tipoDiputado').prop('checked', true);
 
@@ -246,25 +214,41 @@ function limpiarForm() {
     $("#btnBorrar").hide();
     $("#frm").off('submit', manejadorModificar);
     $("#frm").submit(manejadorSubmit);
-
 }
 
-function reestablecerBoxes()
-{
+function reestablecerBoxes(arr) {
     let checkboxs = $('.box input');
     checkboxs.prop("checked", true);
+    if(checkboxs.length == 0){
+        crearBoxes(arr, "divChk");
+    }
+}
+
+function calcularInfo(arr) {
+    calcularEdad(arr);
+    calcularGenderMix(arr);
 }
 
 function calcularEdad(arr) {
-    let promedio = arr.map(obj => parseInt(obj.edad))
-        .reduce((prev, curr) => (prev + curr))/arr.length;
+    let promedio;
+    let edades = arr.map(obj => parseInt(obj.edad));
+    if(edades.length > 0) {
+        promedio = edades.reduce((prev, curr) => (prev + curr))/arr.length;
+    } else {
+        promedio = 0;
+    }
     $('#txtInfoEdad').val(promedio.toFixed(2));
 }
 
 function calcularGenderMix(arr) {
+    let genderMix;
     let cantidadLegisladores = arr.length;
-    let cantidadMujeres = arr.filter(obj => obj.sexo === "Femenino").length;
-    let genderMix = (cantidadMujeres/cantidadLegisladores) * 100;
-    $('#txtInfoGenderMix').val(genderMix.toFixed(2));
+    if(cantidadLegisladores > 0) {
+        let cantidadMujeres = arr.filter(obj => obj.sexo === "Femenino").length;
+        genderMix = (cantidadMujeres/cantidadLegisladores) * 100;
+    } else {
+        genderMix = 0;
+    }
+    $('#genderMix').val(genderMix.toFixed(2) + " %");
 }
 
